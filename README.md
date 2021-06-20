@@ -72,3 +72,28 @@ bean 객체는 싱글톤과 프로토타입이 있다.
 ```
 	
 > @Autowired와 거의 같은 기능을 하는 방식에는 @Inject 가 있다. 차이점은 @Inject는 @Qualifier 대신 @Named 를 사용한다.
+
+### Bean 객체 생명주기
+> 빈 객체가 생성되고 소멸될 때 특정한 작업을 자동으로 진행하고 싶을 때 다음 방법을 이용한다.
+1. interface 이용
+```java
+public class BookSearchService implements InitializingBean, DisposableBean {
+	//중간부분 생략
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		System.out.println("object creat");
+	}
+	
+	@Override
+	public void destroy() throws Exception {
+		System.out.println("object dispose");		
+	}
+	
+}
+```
+2. init-method, destroy-method 이용
+```
+<bean id="memberRegisterService" class="com.brms.member.service.MemberRegisterService"
+	init-method="initMethod" destroy-method="destroyMethod"
+/>	
+```
