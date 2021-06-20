@@ -42,13 +42,33 @@ GenericXmlApplicationContext ctx = new GenericXmlApplicationContext(appCtxs);
 bean 객체는 싱글톤과 프로토타입이 있다.
 싱글톤은 모두 같은 인스턴스를, 프로토타입의 경우 모두 다른 인스턴스를 생성한다.
 
-### 의존객체 자동 주입
+### 의존객체 자동 주입  
 의존객체를 자동으로 주입하면 <bean></bean> 태그 안의 <constructor-arg>를 사용하지 않아도 된다. 
 의존객체 자동 주입 방식에는 @Autowired 방식과 @Resource 방식이 있다.
 
 | 구분 | @Autowired 방식 | @Resource 방식                                                                                         |
 | :----- | ---------------------------------------- | ---------------------------------------- |
 | 의존객체를 찾는 방법 | 객체타입 일치 | 객체이름 일치 |
-| 사용 | 생성자, 프로퍼티, 메소드 모두 사용 가능 | 프로퍼티, 메소드만 사용 가능/생성자X |
-
+| 사용 | 생성자, 프로퍼티, 메소드 모두 사용 가능 | 프로퍼티, 메소드만 사용 가능/생성자X |  
+  
 @Resource 방식의 경우 생성자에 사용할 수 없기 때문에 default 생성자를 꼭 명시해주어야 한다. (@Autowired를 프로퍼티나 메소드에만 사용했을 경우에도 마찬가지이다.)
+
+### 의존객체 선택
+* 동일한 타입의 bean 객체가 여러개라면 스프링은 어떤 bean 객체를 선택해야할까?
+	
+```java
+<bean id="wordDao1" class="com.word.dao.WordDao" />
+<bean id="wordDao2" class="com.word.dao.WordDao" />
+<bean id="wordDao3" class="com.word.dao.WordDao" />
+```
+이 경우 스프링은 어떤 bean 객체를 선택할지 몰라 Exception을 발생시킨다.
+> 해결책
+```java
+<bean id="wordDao1" class="com.word.dao.WordDao" >
+    <qualifier value="usedDao"/>
+</bean>
+<bean id="wordDao2" class="com.word.dao.WordDao" />
+<bean id="wordDao3" class="com.word.dao.WordDao" />
+```
+	
+> @Autowired와 거의 같은 기능을 하는 방식에는 @Inject 가 있다. 차이점은 @Inject는 @Qualifier 대신 @Named 를 사용한다.
