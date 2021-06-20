@@ -32,4 +32,12 @@ ctx.close();
 ### 스프링 설정 파일 분리
 하나의 스프링 설정파일에 모든 bean 객체를 저장하면 관리가 어렵다.
 applicationContext.xml 를 appCtx1.xml, appCtx2.xml, appCtx3.xml 과 같이 기능별로 분리하여 저장한다.
+bean 객체를 사용할 때엔 String 배열을 사용한다.
+```java
+String[] appCtxs = {"classpath:appCtx1.xml", "classpath:appCtx2.xml", "classpath:appCtx3.xml"};
+GenericXmlApplicationContext ctx = new GenericXmlApplicationContext(appCtxs);
+```
 
+### 빈(Bean)의 범위(Scope)
+bean 객체는 싱글톤과 프로토타입이 있다.
+싱글톤은 모두 같은 인스턴스를, 프로토타입의 경우 모두 다른 인스턴스를 생성한다.
